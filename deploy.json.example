@@ -1,0 +1,4 @@
+{
+     { "name" : "kl_test", "server" : "cms@entwicklung.loc", "dir" : "kundenlogin" },
+     { "name" : "ph_test", "server" : "cms@entwicklung.loc", "dir" : "wwwv2" },
+}
