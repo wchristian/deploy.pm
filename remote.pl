@@ -67,9 +67,9 @@ sub run {
 
 sub ask_for_branch {
     my ( $self, $deployer, $ask ) = @_;
-    my @branches = $deployer->branches_detailed;
-    my @choices  = map { [ $_->{id} => "$_->{short_name}: -$_->{commits}[0] +$_->{commits}[1]" ] } @branches;
-    my $id       = $ask->single_choice( text => "Need a branch", choices => \@choices );
+    my @branches = $deployer->branches_detailed( skip => sprintf( '(master|%s)$', $deployer->name ) );
+    my @choices = map { [ $_->{id} => "$_->{short_name}: -$_->{commits}[0] +$_->{commits}[1]" ] } @branches;
+    my $id = $ask->single_choice( text => "Need a branch", choices => \@choices );
     my ( $branch ) = map { $_->{short_name} } grep { $_->{id} == $id } @branches;
     return $branch;
 }

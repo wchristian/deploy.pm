@@ -14,13 +14,14 @@ sub {
   ->();
 
 sub branches_detailed {
-    my ( $self ) = @_;
+    my ( $self, %args ) = @_;
 
     $self->is_clean;
     $self->no_unpushed_commits;
     $self->fetch_all_remotes;
 
     my @branches = grep { /remotes\/origin/ } $self->branches;
+    @branches = grep { !/^remotes\/origin\/$args{skip}/ } @branches if $args{skip};
     @branches =
       map {
         {
