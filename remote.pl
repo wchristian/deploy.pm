@@ -11,7 +11,6 @@ use Ask;
 use Getopt::Long::Descriptive;
 use JSON 'decode_json';
 use IO::All -binary, -utf8;
-use Object::Remote::Logging qw( :log );
 
 use lib '.';
 use deploy;
@@ -49,13 +48,11 @@ sub run {
 
     my ( $target ) = grep { $_->{name} eq $opt->{deployment_id} } @targets
       or die "target $opt->{deployment_id} unknown";
-    log_info { "Deploying on: $opt->{deployment_id}\n" };
 
     my $conn = Object::Remote->connect( $target->{server} );
     my $deployer = deploy->new::on( $conn, name => $opt->{deployment_id}, dir => $target->{dir} );
 
     $opt->{branch} ||= $self->ask_for_branch( $deployer, $ask );
-    log_info { "Deploying branch: $opt->{branch}\n" };
     die "No branch given.\n" if !$opt->{branch};
 
     $deployer->run( $opt->{branch} );
