@@ -6,14 +6,12 @@ package remote;
 
 use 5.010;
 use Moo;
-use Object::Remote;
 use Ask;
 use Getopt::Long::Descriptive;
 use JSON 'decode_json';
 use IO::All -binary, -utf8;
 
 use lib '.';
-use deploy;
 
 $ENV{OBJECT_REMOTE_LOG_FORMAT}     = "[%l %r] [%p]: %s";
 $ENV{OBJECT_REMOTE_LOG_FORWARDING} = 1;
@@ -49,6 +47,8 @@ sub run {
     my ( $target ) = grep { $_->{name} eq $opt->{deployment_id} } @targets
       or die "target $opt->{deployment_id} unknown";
 
+    require Object::Remote;
+    require deploy;
     my $conn = Object::Remote->connect( $target->{server} );
     my $deployer = deploy->new::on( $conn, name => $opt->{deployment_id}, dir => $target->{dir} );
 
