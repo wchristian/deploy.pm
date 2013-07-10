@@ -6,7 +6,7 @@ package remote;
 
 use 5.010;
 use Moo;
-use Ask;
+use Ask::STDIO;
 use Getopt::Long::Descriptive;
 use JSON 'decode_json';
 use IO::All -binary, -utf8;
@@ -34,7 +34,7 @@ sub run {
     );
     print( $usage->text ), exit if $opt->help;
 
-    my $ask = Ask->detect;
+    my $ask = Ask::STDIO->new;
 
     my @targets = @{ decode_json io( "deploy.json" )->all };
 
