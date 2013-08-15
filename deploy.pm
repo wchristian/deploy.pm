@@ -39,7 +39,7 @@ sub branches_detailed {
 sub run {
     my ( $self, $branch ) = @_;
 
-    die sprintf "No branch name given.\n" if !$branch;
+    die "No branch name given.\n" if !$branch;
     die sprintf "Branch to be checked out cannot be the same as the name of the deployment: %s\n", $self->name
       if $self->name eq $branch;
 
