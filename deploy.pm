@@ -144,7 +144,7 @@ From git.de-nserver.de:web-phcom_static_shared
 =cut
 
     $err =~
-s#((|From .*?\n)( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([a-z0-9_-]+|\(none\))\s+-> [a-z]+/[a-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\n##;
+s#((From .*?\n)?( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([a-z0-9_-]+|\(none\))\s+-> [a-z]+/[a-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\n##;
 
     die "'$err':\n$full_err\n" if $err;
     return;
