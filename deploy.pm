@@ -118,31 +118,6 @@ sub fetch_all_remotes {
     };
     my $full_err = $err;
 
-=pod
-From git.de-nserver.de:web-go_de
-   7163b7a..394a3d1  fkoesters_4032_more_corrections -> origin/fkoesters_4032_more_corrections at /loader/0x9bfd018/deploy.pm line 109
-=pod
-From git.de-nserver.de:web-go_de
- * [new branch]      fkoesters_4032_more_corrections -> origin/fkoesters_4032_more_corrections at /loader/0xa039f50/deploy.pm line 109
-=pod
-From git.de-nserver.de:web-go_de
- + e7852d5...fa766e4 allow_go_url -> origin/allow_go_url  (forced update)
- + e7852d5...fa766e4 go_live    -> origin/go_live  (forced update) at /loader/0x971da28/deploy.pm line 109
-=pod
-From git.de-nserver.de:web-phcom_cmsv2
-   99856f5..b73c259  live       -> origin/live
-From git.de-nserver.de:web-phcom_static_shared
- * [new branch]      fkoesters_3531_favicon -> origin/fkoesters_3531_favicon
- * [new branch]      fkoesters_3958_no-setup-fee -> origin/fkoesters_3958_no-setup-fee
- * [new branch]      go_price   -> origin/go_price
- + f951296...c0ccb19 go_stuff   -> origin/go_stuff  (forced update)
-   19b65fa..07a859d  live       -> origin/live
- * [new branch]      new_deploy -> origin/new_deploy at /loader/0x9ddaae0/deploy.pm line 109
-=pod
- x [deleted]         (none)     -> origin/proper_price_file
- x [deleted]         (none)     -> origin/ssl_fix at /loader/0x9f1de90/deploy.pm line 109
-=cut
-
     $err =~
 s#((From .*?\n)?( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([a-z0-9_-]+|\(none\))\s+-> [a-z]+/[a-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\n##;
 

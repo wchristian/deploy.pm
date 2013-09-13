@@ -63,17 +63,6 @@ sub push_branch {
     };
     my $full_err = $err;
 
-=pod
-To git@git.de-nserver.de:web-go_de.git
-   1a92bb3..fa766e4  go_live -> go_live at /loader/0x92cbfb0/deploy.pm line 146
-=pod
-To git@git.de-nserver.de:web-go_de.git
- + fa766e4...1a92bb3 go_live -> go_live (forced update) at /loader/0xa450078/deploy.pm line 146
-=pod
-To git@git.de-nserver.de:web-phcom_edit_tool.git
- * [new branch]      go_test -> go_test at /loader/0x9c1db18/gitrole.pm line 62
-=cut
-
     $err =~
 s#(To .*?\n( [+* ] ([a-z0-9]+\.+[a-z0-9]+|\[new branch\])\s+[a-z0-9_-]+\s+-> [a-z0-9_-]+(|\s+\(forced update\))\n?)|Everything up-to-date) at .*? line \d+\n##;
 
