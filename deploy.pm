@@ -100,12 +100,13 @@ sub carton_update {
 
     log_info { "Installing dependencies\n" };
     my ( $out, $err, $res ) = capture { system "carton install" };
+    my ( $orig_out, $orig_err ) = ( $out, $err );
     $err =~ s/You have .*? \(.*?\)\n//g;
     $err =~ s/Successfully installed .*?\n//g;
     $err =~ s/. distributions installed\n//g;
-    die $err if $res or $err;
+    die $orig_err if $res or $err;
     $out =~ s/Installing modules using cpanfile\n\x1B\[32mComplete! Modules were installed into local\n\x1B\[0m//g;
-    die $out if $out;
+    die $orig_out if $out;
 
     return;
 }
