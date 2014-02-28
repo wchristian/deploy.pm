@@ -6,3 +6,4 @@ requires "Moo";
 requires "File::chdir";
 requires "Ask::STDIO";
 requires "IO::All";
+requires "curry";

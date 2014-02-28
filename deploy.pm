@@ -37,16 +37,19 @@ sub branches_detailed {
 }
 
 sub run {
-    my ( $self, $branch ) = @_;
+    my ( $self, $branch, $skip_precheck_and_checkout ) = @_;
 
     die "No branch name given.\n" if !$branch;
     die sprintf "Branch to be checked out cannot be the same as the name of the deployment: %s\n", $self->name
       if $self->name eq $branch;
 
-    $self->is_clean;
-    $self->no_unpushed_commits;
-    $self->is_on_branch( $self->name );
-    $self->checkout_branch( $branch );
+    if ( !$skip_precheck_and_checkout ) {
+        $self->is_clean;
+        $self->no_unpushed_commits;
+        $self->is_on_branch( $self->name );
+        $self->checkout_branch( $branch );
+    }
+
     $self->update_submodules;
     $self->carton_update;
     log_info { "* Marking deploy in repo: " . $self->dir };

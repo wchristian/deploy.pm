@@ -10,6 +10,8 @@ use Ask::STDIO;
 use Getopt::Long::Descriptive;
 use JSON 'decode_json';
 use IO::All -binary, -utf8;
+use Try::Tiny;
+use curry;
 
 use lib '.';
 
@@ -55,11 +57,36 @@ sub run {
     $opt->{branch} ||= $self->ask_for_branch( $deployer, $ask );
     die "No branch given.\n" if !$opt->{branch};
 
-    $deployer->run( $opt->{branch} );
+    my @deploy_args = ( $opt->{branch} );
+    while ( @deploy_args ) {
+        try {
+            $deployer->run( @deploy_args );
+            @deploy_args = ();
+        }
+        catch {
+            my $e = $_;
+            die $e unless my $action = $self->get_action_for_error( $e );
+            @deploy_args = $action->( $e, $opt->{branch}, $ask );
+        }
+    }
+
     $conn->{send_to_fh}->close;
     sleep 1;
 
     return;
+}
+
+sub get_action_for_error {
+    my ( $self, $error ) = @_;
+    return $self->curry::ask_for_retry_from_submodule_update
+      if $error =~ /fatal: reference is not a tree: \w+\s+Unable to checkout '\w+' in submodule path '\w+'/;
+    return;
+}
+
+sub ask_for_retry_from_submodule_update {
+    my ( $self, $error, $branch, $ask ) = @_;
+    return if !$ask->question( text => "\nTried to update submodule to commit that wasn't pushed:\n\n$error\nYou have a chance to push the submodule now.\nRetry submodule update? [y/N]" );
+    return ( $branch, "skip_precheck_and_checkout" );
 }
 
 sub ask_for_branch {
