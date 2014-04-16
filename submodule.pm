@@ -3,12 +3,13 @@ use strictures;
 package submodule;
 
 use Moo;
-use Object::Remote::Logging qw( :log );
 
 sub {
     with "gitrole";
   }
   ->();
+
+sub log_info (&) { print STDERR shift->() }
 
 sub mark_submodule_deploy {
     my ( $self ) = @_;

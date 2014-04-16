@@ -4,7 +4,6 @@ package deploy;
 
 use Moo;
 use Capture::Tiny 'capture';
-use Object::Remote::Logging qw( :log );
 use File::chdir;
 use submodule;
 
@@ -12,6 +11,8 @@ sub {
     with "gitrole";
   }
   ->();
+
+sub log_info (&) { print STDERR shift->() }
 
 sub branches_detailed {
     my ( $self, %args ) = @_;

@@ -4,7 +4,6 @@ package gitrole;
 
 use Moo::Role;
 use Git::Repository;
-use Object::Remote::Logging qw( :log );
 use Capture::Tiny 'capture';
 
 sub {
@@ -14,6 +13,8 @@ sub {
   ->();
 
 sub _build_r { Git::Repository->new( work_tree => shift->dir, { fatal => '!0' } ) }
+
+sub log_info (&) { print STDERR shift->() }
 
 sub remove_branch {
     my ( $self, $branch, $type, @args ) = @_;
