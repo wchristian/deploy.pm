@@ -53,7 +53,7 @@ sub run {
 
     $self->update_submodules;
     $self->carton_update;
-    log_info { "* Marking deploy in repo: " . $self->dir };
+    log_info { sprintf "* Marking deploy in repo: %s\n", $self->dir };
     $self->mark_deploy( $branch );
     $self->mark_deploy_in_submodules;
 
