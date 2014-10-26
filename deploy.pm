@@ -108,9 +108,9 @@ sub carton_update {
     $err =~ s/You have .*? \(.*?\)\n//g;
     $err =~ s/Successfully installed .*?\n//g;
     $err =~ s/. distributions? installed\n//g;
-    die $orig_err if $res or $err;
+    die "Error - carton_update:\n$orig_err" if $res or $err;
     $out =~ s/Installing modules using cpanfile\n\x1B\[32mComplete! Modules were installed into local\n\x1B\[0m//g;
-    die $orig_out if $out;
+    die "Out - carton_update:\n$orig_out" if $out;
 
     return;
 }
@@ -126,7 +126,7 @@ sub fetch_all_remotes {
     $err =~
 s#((From .*?\n)?( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([A-Za-z0-9_-]+|\(none\))\s+-> [a-z]+/[A-Za-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\.?\n##;
 
-    die "'$err':\n$full_err\n" if $err;
+    die "Error - fetch_all_remotes:\n'$err':\n$full_err\n" if $err;
     return;
 }
 
@@ -156,7 +156,7 @@ sub switch_to_branch {
     $err =~ s/Switched to a new branch '$branch'( at .*? line .*?)?\n//;
     $err =~ s/Running Git hook 'post-commit', 'post-merge' or 'post-commit' to enforce file permissions...\n//;
     $err =~ s/Done( at .*? line .*?)?\n//;
-    die "$err\n" if $err;
+    die "Error - switch_to_branch:\n$err\n" if $err;
     $self->is_on_branch( $branch );
     return;
 }
@@ -179,7 +179,7 @@ sub is_clean {
     $out =~ s@# Your branch is behind '.*?' by \d+ commits, and can be fast-forwarded.\n#\n@@;
 
     my ( $current_branch ) = $out =~ /^# On branch (.*)\nnothing to commit,? \(?working directory clean\)?$/;
-    die "$out\n" if !$current_branch;
+    die "Out - is_clean:\n$out\n" if !$current_branch;
     log_info { "Repo is clean\n" };
 
     return $current_branch;

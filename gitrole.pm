@@ -52,7 +52,7 @@ sub create_branch {
     $err =~ s/Switched to a new branch '$branch'( at .*? line .*?)?\n//;
     $err =~ s/Running Git hook 'post-commit', 'post-merge' or 'post-commit' to enforce file permissions...\n//;
     $err =~ s/Done( at .*? line .*?)?\n//;
-    die "$err\n" if $err;
+    die "Error - create_branch:\n$err\n" if $err;
     return;
 }
 
@@ -67,7 +67,7 @@ sub push_branch {
     $err =~
 s#(To .*?\n( [+* ] ([a-z0-9]+\.+[a-z0-9]+|\[new branch\])\s+[a-z0-9_-]+\s+-> [a-z0-9_-]+(\s+\(forced update\))?\n?)|Everything up-to-date) at .*? line \d+\.?\n##;
 
-    die "'$err':\n$full_err\n" if $err;
+    die "Error - push_branch:\n'$err':\n$full_err\n" if $err;
     return;
 }
 
