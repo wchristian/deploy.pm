@@ -65,7 +65,7 @@ sub push_branch {
     my $full_err = $err;
 
     $err =~
-s#(To .*?\n( [+* ] ([a-z0-9]+\.+[a-z0-9]+|\[new branch\])\s+[a-z0-9_-]+\s+-> [a-z0-9_-]+(\s+\(forced update\))?\n?)|Everything up-to-date) at .*? line \d+\n##;
+s#(To .*?\n( [+* ] ([a-z0-9]+\.+[a-z0-9]+|\[new branch\])\s+[a-z0-9_-]+\s+-> [a-z0-9_-]+(\s+\(forced update\))?\n?)|Everything up-to-date) at .*? line \d+\.?\n##;
 
     die "'$err':\n$full_err\n" if $err;
     return;

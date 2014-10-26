@@ -124,7 +124,7 @@ sub fetch_all_remotes {
     my $full_err = $err;
 
     $err =~
-s#((From .*?\n)?( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([A-Za-z0-9_-]+|\(none\))\s+-> [a-z]+/[A-Za-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\n##;
+s#((From .*?\n)?( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([A-Za-z0-9_-]+|\(none\))\s+-> [a-z]+/[A-Za-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\.?\n##;
 
     die "'$err':\n$full_err\n" if $err;
     return;
