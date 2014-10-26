@@ -12,6 +12,12 @@ sub {
   }
   ->();
 
+sub BUILD {
+    my ( $self ) = @_;
+    $CWD = $self->dir;
+    return;
+}
+
 sub log_info (&) { print STDERR shift->() }
 
 sub branches_detailed {
@@ -73,8 +79,12 @@ sub checkout_branch {
 sub mark_deploy_in_submodules {
     my ( $self ) = @_;
 
-    my @submodules = map { submodule->new( dir => $self->dir . "/$_", name => $self->name ) } $self->submodule_dirs;
-    $_->mark_submodule_deploy for @submodules;
+    my @submodules = map { submodule->new( dir => $_, name => $self->name ) } $self->submodule_dirs;
+
+    for my $submod ( @submodules ) {
+        local $CWD = $submod->dir;
+        $submod->mark_submodule_deploy;
+    }
 
     return;
 }
@@ -99,8 +109,6 @@ sub no_unpushed_commits {
 
 sub carton_update {
     my ( $self ) = @_;
-
-    local $CWD = $self->dir;
 
     log_info { "Installing dependencies\n" };
     my ( $out, $err, $res ) = capture { system "carton install" };

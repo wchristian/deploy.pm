@@ -12,7 +12,11 @@ sub {
   }
   ->();
 
-sub _build_r { Git::Repository->new( work_tree => shift->dir, { fatal => '!0' } ) }
+sub _build_r {
+    my $r = Git::Repository->new( { fatal => '!0' } );
+    $r->{work_tree} = undef;
+    return $r;
+}
 
 sub log_info (&) { print STDERR shift->() }
 
