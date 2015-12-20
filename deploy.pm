@@ -131,8 +131,19 @@ sub fetch_all_remotes {
     };
     my $full_err = $err;
 
-    $err =~
-s#((From .*?\n)?( [*+ x] ([a-z0-9]+\.+[a-z0-9]+|\[(new branch|deleted)\])\s+([A-Za-z0-9_-]+|\(none\))\s+-> [a-z]+/[A-Za-z0-9_-]+(\s+\(forced update\))?\n?)+)+ at .*? line \d+\.?\n##;
+    $err =~ s@
+        (Warning:\ Permanently\ added\ the\ RSA\ host\ key\ for\ IP\ address\ '\d+\.\d+\.\d+\.\d+'\ to\ the\ list\ of\ known\ hosts.\n)?
+        (
+            (From\ .*?\n)?
+            (
+                \ [*+ x]
+                \ ([a-z0-9]+\.+[a-z0-9]+|\[(new\ branch|deleted)\])
+                \s+([A-Za-z0-9_-]+|\(none\))
+                \s+->\ [a-z]+/[A-Za-z0-9_-]+(\s+\(forced\ update\))?\n?
+            )+
+        )+
+        \ at\ .*?\ line\ \d+\.?\n
+    @@x;
 
     die "Error - fetch_all_remotes:\n'$err':\n$full_err\n" if $err;
     return;
