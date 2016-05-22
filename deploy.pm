@@ -22,6 +22,8 @@ sub BUILD {
 sub branches_detailed {
     my ( $self, %args ) = @_;
 
+    log_info { "Generating detailed branch info\n" };
+
     $self->is_clean;
     $self->no_unpushed_commits;
     $self->fetch_all_remotes;
@@ -39,11 +41,15 @@ sub branches_detailed {
       grep { $_ } map { split / /, $_ } @branches;
     $branches[$_]->{id} = $_ for 0 .. $#branches;
 
+    log_info { "Done generating detailed branch info\n" };
+
     return @branches;
 }
 
 sub run {
     my ( $self, $branch, $skip_precheck_and_checkout ) = @_;
+
+    log_info { "Starting deploy\n" };
 
     die "No branch name given.\n" if !$branch;
     die sprintf "Branch to be checked out cannot be the same as the name of the deployment: %s\n", $self->name

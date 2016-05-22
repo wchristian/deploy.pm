@@ -54,9 +54,12 @@ sub run {
 
     require Object::Remote;
     require deploy;
+    log_info { "Connecting to server\n" };
     my $conn = Object::Remote->connect( $target->{server} );
+    log_info { "Creating remote object\n" };
     my $deployer = deploy->new::on( $conn, name => $opt->{deployment_id}, dir => $target->{dir} );
 
+    log_info { "Getting possible branches\n" };
     $opt->{branch} ||= $self->ask_for_branch( $deployer, $ask );
     die "No branch given.\n" if !$opt->{branch};
 
