@@ -85,7 +85,9 @@ sub get_action_for_error {
 
 sub ask_for_retry_from_submodule_update {
     my ( $self, $error, $branch, $ask ) = @_;
-    return if !$ask->question( text => "\nTried to update submodule to commit that wasn't pushed:\n\n$error\nYou have a chance to push the submodule now.\nRetry submodule update? [y/N]" );
+    return
+      if !$ask->question( text => "\nTried to update submodule to commit that wasn't pushed:\n\n$error\n"
+          . "You have a chance to push the submodule now.\nRetry submodule update? [y/N]" );
     return ( $branch, "skip_precheck_and_checkout" );
 }
 

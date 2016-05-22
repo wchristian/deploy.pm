@@ -83,7 +83,7 @@ sub mark_deploy {
     $self->create_branch( $self->name );
     $self->remove_branch( $branch );
     $self->push_branch( $self->name );
-    
+
     return;
 }
 
