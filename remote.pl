@@ -1,8 +1,8 @@
+package remote;
+
 use local::lib 'local';
 
 use strictures;
-
-package remote;
 
 use 5.010;
 use Moo;

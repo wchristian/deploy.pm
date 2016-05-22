@@ -1,6 +1,6 @@
-use strictures;
-
 package deploy;
+
+use strictures;
 
 use Moo;
 use Capture::Tiny 'capture';

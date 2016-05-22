@@ -1,6 +1,6 @@
-use strictures;
-
 package submodule;
+
+use strictures;
 
 use Moo;
 use Object::Remote::Logging ':log';

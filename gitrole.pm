@@ -1,6 +1,6 @@
-use strictures;
-
 package gitrole;
+
+use strictures;
 
 use Moo::Role;
 use Git::Repository;
