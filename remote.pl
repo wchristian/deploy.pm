@@ -13,11 +13,14 @@ use IO::All -binary, -utf8;
 use Try::Tiny;
 use curry;
 
-use lib '.';
+BEGIN {    # must be set up before OR::Logging is loaded to be global
+    $ENV{OBJECT_REMOTE_LOG_FORMAT}     = "[%t] [%l %r] [%p]: %s";
+    $ENV{OBJECT_REMOTE_LOG_FORWARDING} = 1;
+    $ENV{OBJECT_REMOTE_LOG_LEVEL}      = "verbose";
+}
+use Object::Remote::Logging ':log';
 
-$ENV{OBJECT_REMOTE_LOG_FORMAT}     = "[%l %r] [%p]: %s";
-$ENV{OBJECT_REMOTE_LOG_FORWARDING} = 1;
-$ENV{OBJECT_REMOTE_LOG_LEVEL}      = "verbose";
+use lib '.';
 
 __PACKAGE__->new->run( @ARGV ) if !caller;
 exit;

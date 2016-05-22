@@ -5,6 +5,7 @@ package gitrole;
 use Moo::Role;
 use Git::Repository;
 use Capture::Tiny 'capture';
+use Object::Remote::Logging ':log';
 
 sub {
     has $_ => ( is => 'ro', required => 1 ) for qw( dir name );
@@ -17,8 +18,6 @@ sub _build_r {
     $r->{work_tree} = undef;
     return $r;
 }
-
-sub log_info (&) { print STDERR shift->() }
 
 sub remove_branch {
     my ( $self, $branch, $type, @args ) = @_;

@@ -6,6 +6,7 @@ use Moo;
 use Capture::Tiny 'capture';
 use File::chdir;
 use submodule;
+use Object::Remote::Logging ':log';
 
 sub {
     with "gitrole";
@@ -17,8 +18,6 @@ sub BUILD {
     $CWD = $self->dir;
     return;
 }
-
-sub log_info (&) { print STDERR shift->() }
 
 sub branches_detailed {
     my ( $self, %args ) = @_;
