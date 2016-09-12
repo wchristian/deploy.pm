@@ -121,10 +121,11 @@ sub carton_update {
     my ( $out, $err, $res ) = capture { system "carton install" };
     my ( $orig_out, $orig_err ) = ( $out, $err );
     $err =~ s/You have .*? \(.*?\)\n//g;
-    $err =~ s/Successfully installed .*?\n//g;
-    $err =~ s/. distributions? installed\n//g;
+    s/Successfully installed .*?\n//g   for $out, $err;
+    s/\d+ distributions? installed\n//g for $out, $err;
     die "Error - carton_update:\n$orig_err" if $res or $err;
-    $out =~ s/Installing modules using cpanfile\n\x1B\[32mComplete! Modules were installed into local\n\x1B\[0m//g;
+    $out =~
+s/Installing modules using .*?cpanfile\n(?:\x1B\[32m)?Complete! Modules were installed into .*?local\n(?:\x1B\[0m)?//g;
     die "Out - carton_update:\n$orig_out" if $out;
 
     return;
