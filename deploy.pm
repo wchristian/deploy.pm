@@ -5,6 +5,7 @@ use strictures;
 use Moo;
 use Capture::Tiny 'capture';
 use File::chdir;
+use Carp 'croak';
 use submodule;
 use Object::Remote::Logging ':log';
 
@@ -24,6 +25,7 @@ sub branches_detailed {
 
     log_info { "Generating detailed branch info\n" };
 
+    $self->is_on_branch( $self->name );
     $self->is_clean;
     $self->no_unpushed_commits;
     $self->fetch_all_remotes;
@@ -56,9 +58,9 @@ sub run {
       if $self->name eq $branch;
 
     if ( !$skip_precheck_and_checkout ) {
+        $self->is_on_branch( $self->name );
         $self->is_clean;
         $self->no_unpushed_commits;
-        $self->is_on_branch( $self->name );
         $self->checkout_branch( $branch );
     }
 
@@ -166,7 +168,7 @@ sub current_branch {
     my ( $self ) = @_;
 
     my $out = $self->r->run( "status" );
-    my ( $current_branch ) = $out =~ /# On branch (.*)\n/;
+    my ( $current_branch ) = $out =~ /(?:# )?On branch (.*)\n/;
 
     return $current_branch;
 }
@@ -187,7 +189,10 @@ sub switch_to_branch {
 
 sub is_on_branch {
     my ( $self, $branch ) = @_;
-    die "Not on branch: $branch\n" if $self->current_branch ne $branch;
+    croak "is_on_branch: No branch given." if !$branch;
+    my $current = $self->current_branch;
+    croak "is_on_branch: No current branch." if !$current;
+    die "Not on branch: $branch, but on: $current\n" if $current ne $branch;
     log_info { "Is on branch: $branch\n" };
     return;
 }
@@ -202,7 +207,7 @@ sub is_clean {
 
     $out =~ s@# Your branch is behind '.*?' by \d+ commits, and can be fast-forwarded.\n#\n@@;
 
-    my ( $current_branch ) = $out =~ /^# On branch (.*)\nnothing to commit,? \(?working directory clean\)?$/;
+    my ( $current_branch ) = $out =~ /^(?:# )?On branch (.*)\nnothing to commit,? \(?working directory clean\)?$/;
     die "Out - is_clean:\n$out\n" if !$current_branch;
     log_info { "Repo is clean\n" };
 
