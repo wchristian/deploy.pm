@@ -207,6 +207,8 @@ sub is_clean {
 
     $out =~ s@# Your branch is behind '.*?' by \d+ commits, and can be fast-forwarded.\n#\n@@;
 
+    $out =~ s@Your branch is up-to-date with '.*?'\.\n@@;
+
     my ( $current_branch ) = $out =~ /^(?:# )?On branch (.*)\nnothing to commit,? \(?working directory clean\)?$/;
     die "Out - is_clean:\n$out\n" if !$current_branch;
     log_info { "Repo is clean\n" };
