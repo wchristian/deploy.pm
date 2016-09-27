@@ -149,6 +149,10 @@ sub fetch_all_remotes {
                 \s+([A-Za-z0-9_-]+|\(none\))
                 \s+->\ [a-z]+/[A-Za-z0-9_-]+(\s+\(forced\ update\))?\n?
             )+
+            (
+                Auto\ packing\ the\ repository\ in\ background\ for\ optimum\ performance\.\n
+                See\ "git\ help\ gc"\ for\ manual\ housekeeping\.\n?
+            )*
         )+
         \ at\ .*?\ line\ \d+\.?\n
     @@x;
